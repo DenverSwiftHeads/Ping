@@ -35,4 +35,11 @@ static NSString * DisplayAddressForAddress(NSData * address)
     return result;
 }
 
+static NSString * SequenceNumber(NSData * packet)
+// Return the sequence number
+{
+    unsigned int sequenceNumber = (unsigned int) OSSwapBigToHostInt16(((const ICMPHeader *)[packet bytes])->sequenceNumber);
+    return [NSString stringWithFormat: @"%u", sequenceNumber];
+}
+
 #endif /* Network_h */

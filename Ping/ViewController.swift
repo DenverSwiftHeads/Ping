@@ -13,7 +13,8 @@ class ViewController: UIViewController, SimplePingDelegate {
     var pinger:SimplePing?
     var sendTimer:NSTimer?
     
-    @IBOutlet weak var HostLabel: UILabel!
+    @IBOutlet weak var hostLabel: UILabel!
+    @IBOutlet weak var sentLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,20 +35,30 @@ class ViewController: UIViewController, SimplePingDelegate {
         // Dispose of any resources that can be recreated.
     }
 
+    func sendPing(){
+        pinger?.sendPingWithData(nil)
+    }
+    
+    // #pragma: Delegate
     func simplePing(pinger: SimplePing!, didStartWithAddress address: NSData!) {
         assert(self.pinger == pinger)
         
-        debugPrint("pinging ", DisplayAddressForAddress(address))
+        print("pinging ", DisplayAddressForAddress(address))
         
-        HostLabel.text = DisplayAddressForAddress(address)
+        hostLabel.text = DisplayAddressForAddress(address)
         
         sendPing()
         
         sendTimer = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(1), target: self, selector: #selector(ViewController.sendPing), userInfo: nil, repeats: true)
     }
     
-    func sendPing(){
-        pinger?.sendPingWithData(nil)
+    func simplePing(pinger: SimplePing!, didSendPacket: NSData!) {
+        assert(self.pinger == pinger)
+        
+        let sequenceNumber = SequenceNumber(didSendPacket)
+        print(sequenceNumber, "sent")
+        
+        sentLabel.text = "\(sequenceNumber) sent"
     }
 
 }

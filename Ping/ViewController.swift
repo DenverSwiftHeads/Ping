@@ -10,19 +10,23 @@ import UIKit
 
 class ViewController: UIViewController, SimplePingDelegate {
 
-    var simplePing:SimplePing = SimplePing(hostName:"8.8.8.8")
+    var pinger:SimplePing?
+    var sendTimer:NSTimer?
+    
+    @IBOutlet weak var HostLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        simplePing.delegate = self
+        pinger = SimplePing(hostName:"192.168.1.1")
+        pinger?.delegate = self
     }
 
     override func viewDidAppear(animated: Bool) {
-        simplePing.start()
+        pinger?.start()
     }
     override func viewWillDisappear(animated: Bool) {
-        simplePing.stop()
+        pinger?.stop()
     }
     
     override func didReceiveMemoryWarning() {
@@ -31,9 +35,19 @@ class ViewController: UIViewController, SimplePingDelegate {
     }
 
     func simplePing(pinger: SimplePing!, didStartWithAddress address: NSData!) {
-        assert(simplePing == pinger)
+        assert(self.pinger == pinger)
         
-        debugPrint("pinging ", address);
+        debugPrint("pinging ", DisplayAddressForAddress(address))
+        
+        HostLabel.text = DisplayAddressForAddress(address)
+        
+        sendPing()
+        
+        sendTimer = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(1), target: self, selector: #selector(ViewController.sendPing), userInfo: nil, repeats: true)
+    }
+    
+    func sendPing(){
+        pinger?.sendPingWithData(nil)
     }
 
 }

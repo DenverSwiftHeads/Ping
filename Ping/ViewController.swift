@@ -8,18 +8,33 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, SimplePingDelegate {
 
+    var simplePing:SimplePing = SimplePing(hostName:"8.8.8.8")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        simplePing.delegate = self
     }
 
+    override func viewDidAppear(animated: Bool) {
+        simplePing.start()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        simplePing.stop()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
+    func simplePing(pinger: SimplePing!, didStartWithAddress address: NSData!) {
+        assert(simplePing == pinger)
+        
+        debugPrint("pinging ", address);
+    }
 
 }
 

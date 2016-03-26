@@ -37,6 +37,7 @@
 		A0242FFE1CA7439200F82B8F /* Ping-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Ping-Bridging-Header.h"; sourceTree = "<group>"; };
 		A0242FFF1CA7439200F82B8F /* SimplePing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplePing.h; sourceTree = "<group>"; };
 		A02430001CA7439200F82B8F /* SimplePing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimplePing.m; sourceTree = "<group>"; };
+		A02430021CA74B6600F82B8F /* NetworkUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkUtilities.h; sourceTree = "<group>"; };
 		A092DA3E1CA741B500E05403 /* Ping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A092DA411CA741B600E05403 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A092DA431CA741B600E05403 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +108,7 @@
 				A092DA481CA741B600E05403 /* Assets.xcassets */,
 				A092DA4A1CA741B600E05403 /* Info.plist */,
 				A0242FFE1CA7439200F82B8F /* Ping-Bridging-Header.h */,
+				A02430021CA74B6600F82B8F /* NetworkUtilities.h */,
 			);
 			path = Ping;
 			sourceTree = "<group>";

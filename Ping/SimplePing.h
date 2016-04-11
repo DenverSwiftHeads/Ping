@@ -65,17 +65,19 @@
 
 // The SimplePing class is a very simple class that lets you send and receive pings.
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol SimplePingDelegate;
 
 @interface SimplePing : NSObject
 
-+ (SimplePing *)simplePingWithHostName:(NSString *)hostName;        // chooses first IPv4 address
-+ (SimplePing *)simplePingWithHostAddress:(NSData *)hostAddress;    // contains (struct sockaddr)
++ (SimplePing * _Nullable)simplePingWithHostName:(NSString *)hostName;        // chooses first IPv4 address
++ (SimplePing * _Nullable)simplePingWithHostAddress:(NSData *)hostAddress;    // contains (struct sockaddr)
 
 @property (nonatomic, weak,   readwrite) id<SimplePingDelegate> delegate;
 
-@property (nonatomic, copy,   readonly ) NSString *             hostName;
-@property (nonatomic, copy,   readonly ) NSData *               hostAddress;
+@property (nonatomic, copy,   readonly ) NSString * hostName;
+@property (nonatomic, copy,   readonly ) NSData * hostAddress;
 @property (nonatomic, assign, readonly ) uint16_t               identifier;
 @property (nonatomic, assign, readonly ) uint16_t               nextSequenceNumber;
 
@@ -83,7 +85,7 @@
     // Starts the pinger object pinging.  You should call this after 
     // you've setup the delegate and any ping parameters.
 
-- (void)sendPingWithData:(NSData *)data;
+- (void)sendPingWithData:(NSData * _Nullable)data;
     // Sends an actual ping.  Pass nil for data to use a standard 56 byte payload (resulting in a 
     // standard 64 byte ping).  Otherwise pass a non-nil value and it will be appended to the 
     // ICMP header.
@@ -105,11 +107,11 @@
 
 @optional
 
-- (void)simplePing:(SimplePing *)pinger didStartWithAddress:(NSData *)address;
+- (void)simplePing:(SimplePing *)pinger didStartWithAddress:(NSData * )address;
     // Called after the SimplePing has successfully started up.  After this callback, you 
     // can start sending pings via -sendPingWithData:
     
-- (void)simplePing:(SimplePing *)pinger didFailWithError:(NSError *)error;
+- (void)simplePing:(SimplePing * )pinger didFailWithError:(NSError * )error;
     // If this is called, the SimplePing object has failed.  By the time this callback is 
     // called, the object has stopped (that is, you don't need to call -stop yourself).
 
@@ -120,7 +122,7 @@
 - (void)simplePing:(SimplePing *)pinger didSendPacket:(NSData *)packet;
     // Called whenever the SimplePing object has successfully sent a ping packet. 
     
-- (void)simplePing:(SimplePing *)pinger didFailToSendPacket:(NSData *)packet error:(NSError *)error;
+- (void)simplePing:(SimplePing *)pinger didFailToSendPacket:(NSData *)packet error:(NSError * )error;
     // Called whenever the SimplePing object tries and fails to send a ping packet.
 
 - (void)simplePing:(SimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet;
@@ -194,3 +196,5 @@ check_compile_time(offsetof(ICMPHeader, code) == 1);
 check_compile_time(offsetof(ICMPHeader, checksum) == 2);
 check_compile_time(offsetof(ICMPHeader, identifier) == 4);
 check_compile_time(offsetof(ICMPHeader, sequenceNumber) == 6);
+
+NS_ASSUME_NONNULL_END

@@ -8,57 +8,53 @@
 
 import UIKit
 
-class ViewController: UIViewController, SimplePingDelegate {
+class ViewController: UIViewController, SimplePingerDelegate {
 
-    var pinger:SimplePing?
+    var localPinger:SimplePinger?
+    var routerPinger:SimplePinger?
+    var googlePinger:SimplePinger?
     var sendTimer:NSTimer?
     
     @IBOutlet weak var hostLabel: UILabel!
     @IBOutlet weak var sentLabel: UILabel!
+    @IBOutlet weak var errorLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        pinger = SimplePing(hostName:"192.168.1.1")
-        pinger?.delegate = self
+        localPinger = SimplePinger(hostName:"192.168.1.1")
+        localPinger?.delegate = self
     }
 
     override func viewDidAppear(animated: Bool) {
-        pinger?.start()
+        localPinger?.start()
     }
     override func viewWillDisappear(animated: Bool) {
-        pinger?.stop()
+        localPinger?.stop()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    func sendPing(){
-        pinger?.sendPingWithData(nil)
-    }
     
     // #pragma: Delegate
-    func simplePing(pinger: SimplePing!, didStartWithAddress address: NSData!) {
-        assert(self.pinger == pinger)
-        
-        print("pinging ", DisplayAddressForAddress(address))
-        
-        hostLabel.text = DisplayAddressForAddress(address)
-        
-        sendPing()
-        
-        sendTimer = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(1), target: self, selector: #selector(ViewController.sendPing), userInfo: nil, repeats: true)
+    func startWithAddress(simplePinger: SimplePinger, hostName: String) {
+        if(simplePinger == localPinger){
+            hostLabel.text = hostName
+        }
     }
     
-    func simplePing(pinger: SimplePing!, didSendPacket: NSData!) {
-        assert(self.pinger == pinger)
-        
-        let sequenceNumber = SequenceNumber(didSendPacket)
-        print(sequenceNumber, "sent")
-        
-        sentLabel.text = "\(sequenceNumber) sent"
+    func sentPing(simplePinger: SimplePinger, sequenceNumber: String) {
+        if(simplePinger == localPinger) {
+            sentLabel.text = "\(sequenceNumber) sent"
+        }
+    }
+    
+    func failWithError(simplePinger: SimplePinger, error: String) {
+        if(simplePinger == localPinger) {
+            errorLabel.text = "\(error) error"
+        }
     }
 
 }

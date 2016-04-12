@@ -1,8 +1,8 @@
 //
-//  Pinger.swift
+//  SimplePinger.swift
 //  Ping
 //
-//  Created by Derek Bassett on 4/7/16.
+//  Created by Derek Bassett on 4/11/16.
 //  Copyright © 2016 Two Cavemen LLC. All rights reserved.
 //
 
@@ -12,7 +12,6 @@ import Foundation
  * have to be derived off of NSObject because SimplePingDelegate is Object C object.
  */
 @objc class SimplePinger : NSObject, SimplePingDelegate {
-   
     var pinger: SimplePing?
     var timer: NSTimer?
     var delegate: SimplePingerDelegate?
@@ -21,15 +20,15 @@ import Foundation
         super.init()
         pinger = SimplePing(hostName: hostName)
         pinger?.delegate = self
-        pinger?.start()
     }
     
     func start() {
-        
+        pinger?.start()
     }
     
     func stop() {
         timer?.invalidate()
+        timer = nil
     }
     
     func sendPing() {
@@ -76,7 +75,15 @@ import Foundation
     func simplePing(pinger: SimplePing, didFailToSendPacket packet: NSData, error: NSError) {
         assert(self.pinger == pinger)
         
+        let e = shortErrorFromError(error)
         
+        print("failed: \(e)")
+        
+        timer?.invalidate()
+        timer = nil
+        self.pinger = nil
+        
+        delegate?.failToSendPacket(self, error: e)
     }
 }
 
@@ -84,4 +91,6 @@ protocol SimplePingerDelegate {
     func startWithAddress(simplePinger: SimplePinger, hostName: String)
     func sentPing(simplePinger: SimplePinger, sequenceNumber: String)
     func failWithError(simplePinger: SimplePinger, error: String)
+    func failToSendPacket(simplePinger: SimplePinger, error: String)
 }
+

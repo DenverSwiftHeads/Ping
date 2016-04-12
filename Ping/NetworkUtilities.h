@@ -13,9 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 NSString * DisplayAddressForAddress(NSData * address);
 
-NSString * SequenceNumber(NSData * packet);
-
 NSString * shortErrorFromError(NSError * error);
+
+NSString * SequenceNumber(NSData * packet);
 
 NS_ASSUME_NONNULL_END
 

@@ -13,7 +13,6 @@ class ViewController: UIViewController, SimplePingerDelegate {
     var localPinger:SimplePinger?
     var routerPinger:SimplePinger?
     var googlePinger:SimplePinger?
-    var sendTimer:NSTimer?
     
     @IBOutlet weak var hostLabel: UILabel!
     @IBOutlet weak var sentLabel: UILabel!
@@ -40,7 +39,7 @@ class ViewController: UIViewController, SimplePingerDelegate {
     
     // #pragma: Delegate
     func startWithAddress(simplePinger: SimplePinger, hostName: String) {
-        if(simplePinger == localPinger){
+        if (self.localPinger == simplePinger) {
             hostLabel.text = hostName
         }
     }
@@ -52,6 +51,12 @@ class ViewController: UIViewController, SimplePingerDelegate {
     }
     
     func failWithError(simplePinger: SimplePinger, error: String) {
+        if(simplePinger == localPinger) {
+            errorLabel.text = "\(error) error"
+        }
+    }
+    
+    func failToSendPacket(simplePinger: SimplePinger, error: String) {
         if(simplePinger == localPinger) {
             errorLabel.text = "\(error) error"
         }

@@ -36,13 +36,6 @@ NSString * DisplayAddressForAddress(NSData * address)
     return result;
 }
 
-NSString * SequenceNumber(NSData * packet)
-// Return the sequence number
-{
-    unsigned int sequenceNumber = (unsigned int) OSSwapBigToHostInt16(((const ICMPHeader *)[packet bytes])->sequenceNumber);
-    return [NSString stringWithFormat: @"%u", sequenceNumber];
-}
-
 NSString * shortErrorFromError(NSError * error)
 // Given an NSError, returns a short error string that we can print, handling
 // some special cases along the way.
@@ -86,3 +79,11 @@ NSString * shortErrorFromError(NSError * error)
     assert(result != nil);
     return result;
 }
+
+NSString * SequenceNumber(NSData * packet)
+// Return the sequence number
+{
+    unsigned int sequenceNumber = (unsigned int) OSSwapBigToHostInt16(((const ICMPHeader *)[packet bytes])->sequenceNumber);
+    return [NSString stringWithFormat: @"%u", sequenceNumber];
+}
+

@@ -51,6 +51,9 @@
 
 */
 
+#ifndef SimplePing_h
+#define SimplePing_h
+
 #import <Foundation/Foundation.h>
 
 #if TARGET_OS_EMBEDDED || TARGET_IPHONE_SIMULATOR
@@ -198,3 +201,5 @@ check_compile_time(offsetof(ICMPHeader, identifier) == 4);
 check_compile_time(offsetof(ICMPHeader, sequenceNumber) == 6);
 
 NS_ASSUME_NONNULL_END
+
+#endif

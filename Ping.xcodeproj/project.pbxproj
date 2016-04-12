@@ -272,6 +272,7 @@
 				A02430011CA7439200F82B8F /* SimplePing.m in Sources */,
 				A092DA441CA741B600E05403 /* ViewController.swift in Sources */,
 				A092DA421CA741B600E05403 /* AppDelegate.swift in Sources */,
+				A05764161CBCAE6A000D6846 /* NetworkUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

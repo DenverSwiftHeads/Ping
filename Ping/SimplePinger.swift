@@ -8,6 +8,14 @@
 
 import Foundation
 
+
+enum PingerConnection : Character {
+    case Unknown = "\u{1F47D}"
+    case Sad = "\u{1F62D}"
+    case Happy = "\u{1F600}"
+}
+
+
 /**
  * have to be derived off of NSObject because SimplePingDelegate is Object C object.
  */
@@ -15,20 +23,23 @@ import Foundation
     var pinger: SimplePing?
     var timer: NSTimer?
     var delegate: SimplePingerDelegate?
+    var hostName: String
+    var state: PingerConnection = .Unknown
     
     init(hostName: String) {
-        super.init()
-        pinger = SimplePing(hostName: hostName)
-        pinger?.delegate = self
+        self.hostName = hostName
     }
     
     func start() {
+        pinger = SimplePing(hostName: self.hostName)
+        pinger?.delegate = self
         pinger?.start()
     }
     
     func stop() {
         timer?.invalidate()
         timer = nil
+        pinger = nil
     }
     
     func sendPing() {
@@ -55,6 +66,8 @@ import Foundation
         let sequenceNumber = SequenceNumber(didSendPacket)
         print(sequenceNumber, "sent")
         
+        self.state = .Happy
+        
         delegate?.sentPing(self, sequenceNumber: sequenceNumber)
     }
 
@@ -65,9 +78,7 @@ import Foundation
         
         print("failed: \(e)")
         
-        timer?.invalidate()
-        timer = nil
-        self.pinger = nil
+        self.state = .Sad
         
         delegate?.failWithError(self, error: e)
     }
@@ -79,9 +90,7 @@ import Foundation
         
         print("failed: \(e)")
         
-        timer?.invalidate()
-        timer = nil
-        self.pinger = nil
+        self.state = .Sad
         
         delegate?.failToSendPacket(self, error: e)
     }
